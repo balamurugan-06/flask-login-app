@@ -2,7 +2,7 @@ from flask import Flask, render_template, request, redirect, url_for, session
 import psycopg2
 from werkzeug.security import generate_password_hash, check_password_hash
 from flask_session import Session
-
+import os
 app = Flask(__name__)
 app.secret_key = 'your_secret_key_here'  # change this in production
 
@@ -26,11 +26,11 @@ DB_PORT = "5432"
 
 def get_db_connection():
     conn = psycopg2.connect(
-        host=DB_HOST,
-        database=DB_NAME,
-        user=DB_USER,
-        password=DB_PASS,
-        port=DB_PORT
+        host=os.getenv("DB_HOST"),
+        dbname=os.getenv("DB_NAME"),
+        user=os.getenv("DB_USER"),
+        password=os.getenv("DB_PASS"),
+        port=os.getenv("DB_PORT")
     )
     return conn
 
