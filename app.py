@@ -26,7 +26,21 @@ def get_db_connection():
         password=DB_PASS,
         port=DB_PORT
     )
+
+    # Create table if not exists (only once)
+    cur = conn.cursor()
+    cur.execute("""
+        CREATE TABLE IF NOT EXISTS users (
+            id SERIAL PRIMARY KEY,
+            username VARCHAR(50) UNIQUE NOT NULL,
+            password VARCHAR(255) NOT NULL
+        );
+    """)
+    conn.commit()
+    cur.close()
+
     return conn
+
 
 @app.route('/')
 def index():
